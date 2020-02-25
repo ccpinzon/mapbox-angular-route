@@ -1,0 +1,36 @@
+<!--<p>form works!</p>-->
+<div class="card">
+  <h5 class="card-header">Buscar</h5>
+  <div class="card-body">
+    <h5 class="card-title">Ciudad</h5>
+    <form [formGroup]="taskForm" (ngSubmit)="searchCity()">
+
+        <input class="form-group" type="text" placeholder="Busca la ciudad" name="text" formControlName="searchTextForm">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+
+    </form>
+
+    <div class="col-md-12">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">language</th>
+          <th scope="col">latitude</th>
+          <th scope="col">longitude</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let place of places">
+          <td>{{place.name}}</td>
+          <td>{{place.language}}</td>
+          <td>{{place.latitude}}</td>
+          <td>{{place.longitude}}</td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

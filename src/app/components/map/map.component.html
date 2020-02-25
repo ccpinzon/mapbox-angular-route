@@ -1,0 +1,58 @@
+<div class="map" id="map" class="match-parent"></div>
+<mgl-map
+  [style]="'mapbox://styles/mapbox/streets-v9'"
+  [zoom]="[zoom]"
+  [center]="[centerLng, centerLat]"
+>
+  <mgl-layer
+    id="route"
+    type="line"
+    [source]="{
+        'type': 'geojson',
+        'data': {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': geoJsonCoordinates
+            }
+        }
+      }"
+    [layout]="{
+        'line-join': 'round',
+        'line-cap': 'round'
+      }"
+    [paint]="{
+        'line-color': '#5b3165',
+        'line-width': 8
+      }"
+  >
+  </mgl-layer>
+
+  <mgl-image
+    id="cat"
+    url="https://image.flaticon.com/icons/png/512/58/58960.png"
+    (loaded)="imageLoaded = true"
+  >
+  </mgl-image>
+  <mgl-layer
+    *ngIf="imageLoaded"
+    id="points"
+    type="symbol"
+    [source]="{
+        'type': 'geojson',
+        'data': {
+            'type': 'FeatureCollection',
+            'features': [{
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': getCoordinates()
+                }
+            }]
+        }
+      }"
+    [layout]="{'icon-image': 'cat', 'icon-size': 0.1}"
+  >
+  </mgl-layer>
+</mgl-map>
