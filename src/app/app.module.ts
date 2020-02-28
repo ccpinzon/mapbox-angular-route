@@ -6,9 +6,10 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
 import {NgxMapboxGLModule} from 'ngx-mapbox-gl';
 import { FormComponent } from './components/form/form.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {CoordinatesService} from './geolocation/coordinates.service';
+import {NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import {CoordinatesService} from './geolocation/coordinates.service';
       accessToken: 'pk.eyJ1IjoiZGd1dGkwOSIsImEiOiJjazF2ZXM3dDEwM2hkM2RvNDJ3ZjI4dTczIn0._cnc3MhGTEkYI9ty2Vl_Tg'
     }),
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbTypeaheadModule,
+    FormsModule
   ],
   providers: [CoordinatesService],
   bootstrap: [AppComponent]

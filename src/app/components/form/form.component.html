@@ -3,14 +3,25 @@
   <h5 class="card-header">Buscar</h5>
   <div class="card-body">
     <h5 class="card-title">Ciudad</h5>
-    <form [formGroup]="taskForm" (ngSubmit)="searchCity()">
 
-        <input class="form-group" type="text" placeholder="Busca la ciudad" name="text" formControlName="searchTextForm">
-        <button type="submit" class="btn btn-primary">Buscar</button>
+    <input type="text"
+           #inputElementSearchCity
+           class="form-control"
+           placeholder="Search City"
+           [(ngModel)]="modelPlace"
+           (keyup)="getCities(inputElementSearchCity.value)">
 
-    </form>
+    <div class="list-group" *ngIf="hasCities">
+      <button type="button"
+              class="list-group-item list-group-item-action"
+              *ngFor="let place of places"
+              (click)="setCoordinatesToMap(place.latitude, place.longitude)">
+        {{place.name}}
+      </button>
+    </div>
+    <hr>
 
-    <div class="col-md-12">
+    <!--<div class="col-md-12">
       <table class="table table-bordered">
         <thead>
         <tr>
@@ -30,7 +41,7 @@
         </tr>
         </tbody>
       </table>
-    </div>
+    </div>-->
 
   </div>
 </div>

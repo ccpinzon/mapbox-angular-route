@@ -26,7 +26,7 @@ export class TollApiService {
     })
   };
 
-  getToll(searchText: string): Observable<Place[]> {
+  getCities(searchText: string): Observable<Place[]> {
     return this.http.get<Place[]>(this.apiURL + '/geolocation/autocomplete/' + searchText).pipe(
       retry(1),
       catchError(this.handleError)

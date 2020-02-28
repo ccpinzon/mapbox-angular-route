@@ -155,14 +155,14 @@ export class MapComponent implements OnInit {
   }
   getCoordinatesService(coordinatesService: CoordinatesService) {
     this.coordinatesService.componentMethodCalled$.subscribe(() => {
-      console.log(`subscribe to coordinates service`);
+      // console.log(`subscribe to coordinates service`);
       this.centerLat = coordinatesService.latitudeToMap;
       this.centerLng = coordinatesService.longitudeToMap;
       console.log(`moviendo mapa hacia -> ${this.centerLat} , ${this.centerLng}`);
     });
   }
   getCoordinates() {
-    console.log(`Call getCoordinates -> [ ${this.centerLng} , ${this.centerLat} ] `)
+    // console.log(`Call getCoordinates -> [ ${this.centerLng} , ${this.centerLat} ] `)
     return [this.centerLng, this.centerLat];
   }
   ngOnInit() {

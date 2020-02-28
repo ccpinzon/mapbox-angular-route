@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
 import {TollApiService} from '../../geolocation/toll-api.service';
 import {Place} from '../../geolocation/place';
 import {CoordinatesService} from '../../geolocation/coordinates.service';
+import {NgbTypeaheadConfig} from '@ng-bootstrap/ng-bootstrap';
+import {Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+
 
 
 @Component({
@@ -12,19 +15,19 @@ import {CoordinatesService} from '../../geolocation/coordinates.service';
 })
 export class FormComponent implements OnInit {
 
-  places: Place[]  = [];
-
-  constructor(private formBuilder: FormBuilder,
+  constructor(
               private tollApiService: TollApiService,
-              private coordinatesService: CoordinatesService) { }
-  taskForm: FormGroup = this.formBuilder.group({
-    searchTextForm: ''
-  });
-
-  ngOnInit(): void {
+              private coordinatesService: CoordinatesService,
+              private configTypeHead: NgbTypeaheadConfig) {
+    configTypeHead.showHint = true;
   }
 
-  searchCity() {
+  places: Place[]  = [];
+  modelPlace: string;
+  hasCities: boolean;
+  ngOnInit(): void {
+  }
+  /*searchCity() {
     console.log('method searchCity() ');
     if (this.taskForm.controls.searchTextForm.value) {
       const texto = this.taskForm.controls.searchTextForm.value;
@@ -37,6 +40,26 @@ export class FormComponent implements OnInit {
         this.coordinatesService.callComponentMethod();
       } );
     }
+  }*/
+
+  setCoordinatesToMap(lat: number, lon: number) {
+    if (lat && lon) {
+      this.coordinatesService.setNewCoordinatesMap(lat, lon);
+      this.coordinatesService.callComponentMethod();
+      this.hasCities = false;
+      this.modelPlace = '';
+    }
   }
 
+
+  getCities(textSearch: string) {
+    if (textSearch) {
+      this.tollApiService.getCities(textSearch).subscribe( res => {
+        this.places = res;
+        this.hasCities = true;
+      });
+    }
+    this.hasCities = false;
+    console.log(textSearch);
+  }
 }
