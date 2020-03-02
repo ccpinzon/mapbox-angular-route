@@ -1,40 +1,39 @@
-<div class="map" id="map" class="match-parent"></div>
+
+<div class="row" *ngIf="distance">
+  <h6>Distancia: {{this.distance}}</h6>
+  <hr>
+</div>
+<div class="row">
+  <div class="map" id="map" class="match-parent">
+  </div>
+
 <mgl-map
   [style]="'mapbox://styles/mapbox/streets-v9'"
   [zoom]="[zoom]"
   [center]="[centerLng, centerLat]"
 >
   <mgl-layer
-    id="route"
+    *ngFor="let route of routeList"
+    [id]="route.id"
     type="line"
-    [source]="{
-        'type': 'geojson',
-        'data': {
-            'type': 'Feature',
-            'properties': {},
-            'geometry': {
-                'type': 'LineString',
-                'coordinates': geoJsonCoordinates
-            }
-        }
-      }"
+    [source]="route.data"
     [layout]="{
         'line-join': 'round',
         'line-cap': 'round'
       }"
     [paint]="{
         'line-color': '#5b3165',
-        'line-width': 8
+        'line-width': 6
       }"
   >
   </mgl-layer>
 
-  <mgl-image
+<!--  <mgl-image
     id="cat"
     url="https://image.flaticon.com/icons/png/512/58/58960.png"
     (loaded)="imageLoaded = true"
   >
-  </mgl-image>
+  </mgl-image>-->
   <mgl-layer
     *ngIf="imageLoaded"
     id="points"
@@ -56,3 +55,4 @@
   >
   </mgl-layer>
 </mgl-map>
+</div>

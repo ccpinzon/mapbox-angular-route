@@ -5,6 +5,7 @@ import {CoordinatesService} from '../../geolocation/coordinates.service';
 import {NgbTypeaheadConfig} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {RoutingInfo} from '../../geolocation/routing-info';
 
 
 
@@ -22,9 +23,16 @@ export class FormComponent implements OnInit {
     configTypeHead.showHint = true;
   }
 
-  places: Place[]  = [];
-  modelPlace: string;
-  hasCities: boolean;
+  placesOrigin: Place[]  = [];
+  placesDestiny: Place[]  = [];
+  modelPlaceOrigin: string;
+  modelPlaceDestiny: string;
+  hasPlacesOrigin: boolean;
+  hasPlacesDestiny: boolean;
+  latOrigin: number;
+  lonOrigin: number;
+  latDestiny: number;
+  lonDestiny: number;
   ngOnInit(): void {
   }
   /*searchCity() {
@@ -42,24 +50,63 @@ export class FormComponent implements OnInit {
     }
   }*/
 
-  setCoordinatesToMap(lat: number, lon: number) {
-    if (lat && lon) {
-      this.coordinatesService.setNewCoordinatesMap(lat, lon);
-      this.coordinatesService.callComponentMethod();
-      this.hasCities = false;
-      this.modelPlace = '';
+
+  setCoordinatesToOrigin(place: Place) {
+    if (place.latitude && place.longitude) {
+      console.log(`origin -> (${place.longitude} , ${place.latitude})`);
+      this.latOrigin = place.latitude;
+      this.lonOrigin = place.longitude;
+      this.modelPlaceOrigin = place.name;
+      this.hasPlacesOrigin = false;
     }
+  }
+  setCoordinatesToDestiny(place: Place) {
+    if (place.latitude && place.longitude) {
+      console.log(`destiny ->  (${place.longitude} , ${place.latitude})`);
+      this.latDestiny = place.latitude;
+      this.lonDestiny = place.longitude;
+      this.modelPlaceDestiny = place.name;
+      this.hasPlacesDestiny = false;
+    }
+  }
+  calcRoute() {
+    const routingInfo: RoutingInfo = new RoutingInfo();
+    routingInfo.latitudeOrigin = this.latOrigin;
+    routingInfo.longitudeOrigin = this.lonOrigin;
+    routingInfo.latitudeDestiny = this.latDestiny;
+    routingInfo.longitudeDestiny = this.lonDestiny;
+    this.coordinatesService.setRoutingInfo(routingInfo);
+    this.coordinatesService.callComponentMethod();
+  }
+
+  setCoordinatesToMap() {
+      this.coordinatesService.setNewCoordinatesMap(this.latDestiny, this.lonDestiny);
+      this.coordinatesService.callComponentMethod();
+      // this.hasCities = false;
+      // this.modelPlaceOrigin = '';
+      // this.modelPlaceDestiny = '';
   }
 
 
-  getCities(textSearch: string) {
+  getCitiesOrigin(textSearch: string) {
     if (textSearch) {
       this.tollApiService.getCities(textSearch).subscribe( res => {
-        this.places = res;
-        this.hasCities = true;
+        this.placesOrigin = res;
+        this.hasPlacesOrigin = true;
       });
     }
-    this.hasCities = false;
+    this.hasPlacesOrigin = false;
+    console.log(textSearch);
+  }
+
+  getCitiesDestiny(textSearch: string) {
+    if (textSearch) {
+      this.tollApiService.getCities(textSearch).subscribe( res => {
+        this.placesDestiny = res;
+        this.hasPlacesDestiny = true;
+      });
+    }
+    this.hasPlacesDestiny = false;
     console.log(textSearch);
   }
 }

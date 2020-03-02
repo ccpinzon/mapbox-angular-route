@@ -2,24 +2,47 @@
 <div class="card">
   <h5 class="card-header">Buscar</h5>
   <div class="card-body">
-    <h5 class="card-title">Ciudad</h5>
+    <h5 class="card-title">Ciudad Origen</h5>
 
     <input type="text"
-           #inputElementSearchCity
+           #inputElementSearchCityOrigin
            class="form-control"
            placeholder="Search City"
-           [(ngModel)]="modelPlace"
-           (keyup)="getCities(inputElementSearchCity.value)">
+           [(ngModel)]="modelPlaceOrigin"
+           (keyup)="getCitiesOrigin(inputElementSearchCityOrigin.value)">
 
-    <div class="list-group" *ngIf="hasCities">
+    <div class="list-group" *ngIf="hasPlacesOrigin">
       <button type="button"
               class="list-group-item list-group-item-action"
-              *ngFor="let place of places"
-              (click)="setCoordinatesToMap(place.latitude, place.longitude)">
+              *ngFor="let place of placesOrigin"
+              (click)="setCoordinatesToOrigin(place)">
         {{place.name}}
       </button>
     </div>
     <hr>
+    <h5 class="card-title">Ciudad Destino</h5>
+    <input type="text"
+           #inputElementSearchCityDestiny
+           class="form-control"
+           placeholder="Search City"
+           [(ngModel)]="modelPlaceDestiny"
+           (keyup)="getCitiesDestiny(inputElementSearchCityDestiny.value)">
+
+    <div class="list-group" *ngIf="hasPlacesDestiny">
+      <button type="button"
+              class="list-group-item list-group-item-action"
+              *ngFor="let place of placesDestiny"
+              (click)="setCoordinatesToDestiny(place)">
+        {{place.name}}
+      </button>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-4 offset-md-8">
+        <button type="button" class="btn btn-primary" (click)="calcRoute()">Calcular Ruta</button>
+      </div>
+    </div>
+
 
     <!--<div class="col-md-12">
       <table class="table table-bordered">

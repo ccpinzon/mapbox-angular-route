@@ -3,6 +3,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {Place} from './place';
 import {catchError, retry} from 'rxjs/operators';
+import {RoutingInfo} from './routing-info';
+import {RouteGeojson} from './route-geojson';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +34,14 @@ export class TollApiService {
       catchError(this.handleError)
     );
   }
+
+  getRouteCoordinates(routingInfo: RoutingInfo): Observable<RouteGeojson> {
+    return this.http.post<RouteGeojson>(this.apiURL + '/geolocation/route', routingInfo).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
+  }
+
   handleError(error) {
     let errorMessage = '';
     if ( error.error instanceof ErrorEvent) {
